@@ -1,44 +1,52 @@
 <h1 class="text-center mb-4 text-2xl font-bold">Liste des produits</h1>
 
+<!-- Filter by Name -->
+<div class="filter-container mb-4 p-4 shadow-md">
+  <div class="w-full">
+    <label for="filterName">Rechercher par nom:</label>
+    <input pInputText type="text" id="filterName" [(ngModel)]="filterName" placeholder="Tapez le nom du produit" class="w-full" />
+  </div>
+</div>
+
 <p-button label="Créer produit" (onClick)="onCreate()" class="block mx-auto mb-6 text-center" />
 
-<p-dataView #dv [value]="products()" layout="list">
+<p-dataView #dv [value]="filteredProducts" layout="list">
   <ng-template pTemplate="list" let-products>
     @for (product of products; track product) {
-      <p-card class="product-card">
-        <div class="product-card-content">
-          <!-- Product Image -->
-          <a class="product-image">
-            <img [src]="getProductImage(product)" alt="{{ product.name }}" />
-          </a>
+    <p-card class="product-card">
+      <div class="product-card-content">
+        <!-- Product Image -->
+        <a class="product-image">
+          <img [src]="getProductImage(product)" alt="{{ product.name }}" />
+        </a>
 
-          <!-- Product Info -->
-          <div class="product-info">
-            <span class="product-category">{{ product.category }}</span>
-            <h2 class="product-name">{{ product.name }}</h2>
-            <p class="product-description">{{ product.description }}</p>
+        <!-- Product Info -->
+        <div class="product-info">
+          <span class="product-category">{{ product.category }}</span>
+          <h2 class="product-name">{{ product.name }}</h2>
+          <p class="product-description">{{ product.description }}</p>
 
-            <div class="product-footer">
-              <div class="product-price">${{ product.price }}</div>
+          <div class="product-footer">
+            <div class="product-price">${{ product.price }}</div>
 
-              <div *ngIf="product.rating" class="product-rating">
-                <i class="pi pi-star" *ngFor="let _ of [].constructor(product.rating)"></i>
-              </div>
+            <div *ngIf="product.rating" class="product-rating">
+              <i class="pi pi-star" *ngFor="let _ of [].constructor(product.rating)"></i>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Action Buttons -->
-        <div class="flex items-center mt-4 action-buttons">
-                <div class="flex gap-4">
-                  <p-button label="Modifier" severity="secondary" (onClick)="onUpdate(product)" class="px-4"></p-button>
-                  <p-button label="Supprimer" severity="danger" (onClick)="onDelete(product)" class="px-4"></p-button>
-                </div>
-                <div>
+      <!-- Action Buttons -->
+      <div class="flex items-center mt-4 action-buttons">
+        <div class="flex gap-4">
+          <p-button label="Modifier" severity="secondary" (onClick)="onUpdate(product)" class="px-4"></p-button>
+          <p-button label="Supprimer" severity="danger" (onClick)="onDelete(product)" class="px-4"></p-button>
+        </div>
+        <div>
                     <p-button (onClick)="addItem(product)" label="Add to Cart" icon="pi pi-shopping-cart" severity="success" class="px-4"></p-button>
-                </div>
-              </div>
-      </p-card>
+        </div>
+      </div>
+    </p-card>
     }
   </ng-template>
 </p-dataView>
