@@ -30,6 +30,7 @@
             "styles": [
               "src/styles.scss",
               "node_modules/primeflex/primeflex.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               {
                 "input": "src/styles/dark.css",
                 "bundleName": "mdc-dark-deeppurple",
@@ -43,7 +44,8 @@
             ],
             "scripts": [
               "node_modules/quill/dist/quill.js",
-              "node_modules/chart.js/dist/chart.js"
+              "node_modules/chart.js/dist/chart.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ],
             "stylePreprocessorOptions": {
               "includePaths": ["src/styles"]

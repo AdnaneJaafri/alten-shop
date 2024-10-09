@@ -3,6 +3,7 @@ import { Component, OnInit, inject, signal } from "@angular/core";
 import { Product } from "app/products/data-access/product.model";
 import { ProductsService } from "app/products/data-access/products.service";
 import { ProductFormComponent } from "app/products/ui/product-form/product-form.component";
+import { CartService } from "app/services/cart.service";
 import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { DataViewModule } from 'primeng/dataview';
@@ -34,7 +35,7 @@ const emptyProduct: Product = {
 })
 export class ProductListComponent implements OnInit {
   private readonly productsService = inject(ProductsService);
-
+  private readonly cartService = inject(CartService);
   public readonly products = this.productsService.products;
 
   public isDialogVisible = false;
@@ -43,6 +44,11 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit() {
     this.productsService.get().subscribe();
+  }
+
+  getProductImage(product: Product): string {
+    // Using Lorem Picsum to generate placeholder images based on product id
+    return `https://picsum.photos/seed/${product.id}/200/200`;
   }
 
   public onCreate() {
@@ -76,5 +82,9 @@ export class ProductListComponent implements OnInit {
 
   private closeDialog() {
     this.isDialogVisible = false;
+  }
+
+  addItem(product: Product) {
+    this.cartService.addItem(product);
   }
 }

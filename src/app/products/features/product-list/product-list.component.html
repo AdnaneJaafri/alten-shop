@@ -1,31 +1,54 @@
-<h1 class="text-center">Liste des produits</h1>
+<h1 class="text-center mb-4 text-2xl font-bold">Liste des produits</h1>
 
-<p-button label="Créer produit" (onClick)="onCreate()" class="block text-center"/>
+<p-button label="Créer produit" (onClick)="onCreate()" class="block mx-auto mb-6 text-center" />
 
-<p-dataView #dv [value]="products()">
-    <ng-template pTemplate="list" let-products>
-        @for (product of products; track product) {
-            <p-card class="block mb-2">
-                <span class="font-medium text-secondary text-sm">{{ product.category }}</span>
-                <div class="text-lg font-medium text-900 mt-2">{{ product.name }}</div>
+<p-dataView #dv [value]="products()" layout="list">
+  <ng-template pTemplate="list" let-products>
+    @for (product of products; track product) {
+      <p-card class="product-card">
+        <div class="product-card-content">
+          <!-- Product Image -->
+          <a class="product-image">
+            <img [src]="getProductImage(product)" alt="{{ product.name }}" />
+          </a>
 
-                <ng-template pTemplate="footer">
-                    <div class="flex gap-3 mt-1">
-                        <p-button label="Modifier" severity="secondary" (onClick)="onUpdate(product)"/>
-                        <p-button label="Supprimer" severity="danger" (onClick)="onDelete(product)" />
-                    </div>
-                </ng-template>
-            </p-card>
-        }
-    </ng-template>
+          <!-- Product Info -->
+          <div class="product-info">
+            <span class="product-category">{{ product.category }}</span>
+            <h2 class="product-name">{{ product.name }}</h2>
+            <p class="product-description">{{ product.description }}</p>
+
+            <div class="product-footer">
+              <div class="product-price">${{ product.price }}</div>
+
+              <div *ngIf="product.rating" class="product-rating">
+                <i class="pi pi-star" *ngFor="let _ of [].constructor(product.rating)"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center mt-4 action-buttons">
+                <div class="flex gap-4">
+                  <p-button label="Modifier" severity="secondary" (onClick)="onUpdate(product)" class="px-4"></p-button>
+                  <p-button label="Supprimer" severity="danger" (onClick)="onDelete(product)" class="px-4"></p-button>
+                </div>
+                <div>
+                    <p-button (onClick)="addItem(product)" label="Add to Cart" icon="pi pi-shopping-cart" severity="success" class="px-4"></p-button>
+                </div>
+              </div>
+      </p-card>
+    }
+  </ng-template>
 </p-dataView>
 
 <p-dialog [(visible)]="isDialogVisible"
-    [style]="{ width: '50vw' }"
-    header="Ajout/Edition produit">
-    <app-product-form
-        [product]="editedProduct()"
-        (save)="onSave($event)"
-        (cancel)="onCancel()"
-    />
+  [style]="{ width: '50vw' }"
+  header="Ajout/Edition produit">
+  <app-product-form
+      [product]="editedProduct()"
+      (save)="onSave($event)"
+      (cancel)="onCancel()"
+  />
 </p-dialog>
